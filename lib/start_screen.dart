@@ -11,7 +11,7 @@ class StarScreen extends StatelessWidget {
       backgroundColor: Colors.deepPurpleAccent,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Image.asset(
               "images/quizapp.png",
@@ -31,9 +31,9 @@ class StarScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_right_alt),
               label: const Text("Start"),
               style: OutlinedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Color.fromARGB(255, 0, 0, 0),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.fromLTRB(14, 20, 14, 20)),
+                  padding: EdgeInsets.fromLTRB(100, 20, 100, 20)),
             ),
           ],
         ),

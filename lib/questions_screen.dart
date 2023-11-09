@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_workshop_quizapp/data/questions.dart';
-import 'package:flutter_workshop_quizapp/result_screen.dart';
 
 class QuestionScreen extends StatefulWidget {
-  const QuestionScreen({Key? key}) : super(key: key);
+  const QuestionScreen({Key? key, required this.onChoseAnswer})
+      : super(key: key);
+
+  final void Function(String answer, String questionPar) onChoseAnswer;
 
   @override
   _QuestionState createState() => _QuestionState();
@@ -11,18 +13,13 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionState extends State<QuestionScreen> {
   int currentQuestionIndex = 0;
-  int correctAnswerCount = 0;
-  int wrongAnswerCount = 0;
 
-  void changeQuestion(String selectedAnswer) {
+  void changeQuestion(String answer, String questionsFuncPar) {
     setState(() {
-      if (selectedAnswer == questions[currentQuestionIndex].correctAnswer) {
-        correctAnswerCount++;
-      } else {
-        wrongAnswerCount++;
+      widget.onChoseAnswer(answer, questionsFuncPar);
+      if (questions.length - 1 > currentQuestionIndex) {
+        currentQuestionIndex++;
       }
-
-      currentQuestionIndex++;
     });
   }
 
@@ -38,24 +35,19 @@ class _QuestionState extends State<QuestionScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(currentQuestion.question),
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  child: Text(
+                    currentQuestion.question,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
                 ...currentQuestion.answers.map((answer) {
                   return ElevatedButton(
-                    onPressed: () {
-                      if (questions.length - 1 > currentQuestionIndex) {
-                        changeQuestion(answer);
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultScreen(
-                                      correctAnswers: correctAnswerCount,
-                                      wrongAnswers: wrongAnswerCount,
-                                    )));
-                      }
-                    },
-                    child: Text(answer),
-                  );
+                      child: Text(answer),
+                      onPressed: () {
+                        changeQuestion(answer, currentQuestion.question);
+                      });
                 })
               ],
             ),
